@@ -1,16 +1,16 @@
+import React, { useState } from "react";
 import { View, Text, SafeAreaView, StyleSheet, TextInput, Button, Alert } from "react-native";
-import { useState } from "react";
 
 export default function Login() {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
 
     const handleLogin = async () => {
         try {
-            const response = await fetch('https://miki.a2gakhir.com/api/login', {
-                method: 'POST',
+            const response = await fetch("https://miki.a2gakhir.com/api/login", {
+                method: "POST",
                 headers: {
-                    'Content-Type': 'application/json',
+                    "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
                     email: email,
@@ -18,40 +18,41 @@ export default function Login() {
                 }),
             });
 
-         
-
             if (response.ok) {
-                Alert.alert('Success', 'Login successful!');
+                Alert.alert("Success", "Login successful.");
             } else {
-                Alert.alert('Error', 'An error occurred. Please try again.');
+                Alert.alert("Error", "An error occurred. Please try again.");
             }
         } catch (error) {
-            console.error('Error:', error);
-            Alert.alert('Error', 'An error occurred. Please try again.');
+            console.error("Error:", error);
+            Alert.alert("Error", "An error occurred. Please try again.");
         }
     };
 
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.form}>
-                <Text style={styles.text}>Login</Text>
+                <Text style={styles.title}>Login</Text>
+
                 <Text>Email</Text>
-                <TextInput 
-                    style={styles.textInput}
+                <TextInput
+                    style={styles.input}
                     keyboardType="email-address"
                     onChangeText={setEmail}
                     value={email}
                     placeholder="Enter your email"
                 />
+
                 <Text>Password</Text>
-                <TextInput 
-                    style={styles.textInput}
+                <TextInput
+                    style={styles.input}
                     secureTextEntry
                     autoComplete="off"
                     onChangeText={setPassword}
                     value={password}
                     placeholder="Enter your password"
                 />
+
                 <Button title="Login" onPress={handleLogin} />
             </View>
         </SafeAreaView>
@@ -61,27 +62,28 @@ export default function Login() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
+        backgroundColor: "#fff",
+        alignItems: "center",
+        justifyContent: "center",
     },
     form: {
-        backgroundColor: 'lightpink',
+        backgroundColor: 'lightblue',
         padding: 20,
         width: '80%',
-        alignItems: 'center',
         borderRadius: 10,
     },
-    text: {
-        fontSize: 20,
+    title: {
+        fontSize: 24,
         fontWeight: 'bold',
         marginBottom: 20,
+        textAlign: 'center',
     },
-    textInput: {
-        padding: 10,
-        borderWidth: 2,
-        borderColor: 'black',
-        width: '100%',
+    input: {
+        height: 40,
+        borderColor: 'gray',
+        borderWidth: 1,
         marginBottom: 10,
-    }
+        paddingLeft: 10,
+        borderRadius: 5,
+    },
 });
