@@ -1,251 +1,167 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
-import { View, Text, SafeAreaView, StyleSheet, TextInput, Button, Alert } from 'react-native';
-
-
+import {
+  View,
+  Text,
+  SafeAreaView,
+  StyleSheet,
+  TextInput,
+  Button,
+  Alert,
+} from "react-native";
 
 export default function SignUp() {
+  const [name, setName] = useState("");
 
-    const [name, setName] = useState('');
+  const [email, setEmail] = useState("");
 
-    const [email, setEmail] = useState('');
+  const [password, setPassword] = useState("");
 
-    const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState("");
 
-    const [confirmPassword, setConfirmPassword] = useState('');
+  const [faceType, setFaceType] = useState("");
 
-    const [faceType, setFaceType] = useState('');
+  const handleSignUp = async () => {
+    if (password !== confirmPassword) {
+      Alert.alert("Error", "Passwords do not match.");
 
+      return;
+    }
 
+    try {
+      const response = await fetch("https://miki.a2gakhir.com/api/signup", {
+        method: "POST",
 
-    const handleSignUp = async () => {
+        headers: {
+          "Content-Type": "application/json",
+        },
 
-        if (password !== confirmPassword) {
+        body: JSON.stringify({
+          name,
 
-            Alert.alert('Error', 'Passwords do not match.');
+          email,
 
-            return;
+          password,
 
-        }
+          password_confirmation: confirmPassword,
 
+          face_type: [faceType],
+        }),
+      });
 
+      if (response.ok) {
+        Alert.alert("Success", "Sign up successful!");
+      } else {
+        Alert.alert("Error", "An error occurred. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error:", error);
 
-        try {
+      Alert.alert("Error", "An error occurred. Please try again.");
+    }
+  };
 
-            const response = await fetch('https://miki.a2gakhir.com/api/signup', {
+  return (
+    <SafeAreaView style={styles.container}>
+      <View style={styles.form}>
+        <Text style={styles.title}>Sign Up</Text>
 
-                method: 'POST',
+        <Text>Name</Text>
 
-                headers: {
+        <TextInput
+          style={styles.input}
+          onChangeText={setName}
+          value={name}
+          placeholder="Enter your name"
+        />
 
-                    'Content-Type': 'application/json',
+        <Text>Email</Text>
 
-                },
+        <TextInput
+          style={styles.input}
+          onChangeText={setEmail}
+          value={email}
+          placeholder="Enter your email"
+          keyboardType="email-address"
+        />
 
-                body: JSON.stringify({
+        <Text>Password</Text>
 
-                    name,
+        <TextInput
+          style={styles.input}
+          onChangeText={setPassword}
+          value={password}
+          placeholder="Enter your password"
+          secureTextEntry
+        />
 
-                    email,
+        <Text>Confirm Password</Text>
 
-                    password,
+        <TextInput
+          style={styles.input}
+          onChangeText={setConfirmPassword}
+          value={confirmPassword}
+          placeholder="Confirm your password"
+          secureTextEntry
+        />
 
-                    password_confirmation: confirmPassword,
+        <Text>Face Type</Text>
 
-                    face_type: [faceType],
-
-                }),
-
-            });
-
-
-
-
-
-
-
-            if (response.ok) {
-
-                Alert.alert('Success', 'Sign up successful!');
-
-            } else {
-
-                Alert.alert('Error', 'An error occurred. Please try again.');
-
-            }
-
-        } catch (error) {
-
-            console.error('Error:', error);
-
-            Alert.alert('Error', 'An error occurred. Please try again.');
-
-        }
-
-    };
-
-
-
-    return (
-
-        <SafeAreaView style={styles.container}>
-
-            <View style={styles.form}>
-
-                <Text style={styles.title}>Sign Up</Text>
-
-
-
-                <Text>Name</Text>
-
-                <TextInput
-
-                    style={styles.input}
-
-                    onChangeText={setName}
-
-                    value={name}
-
-                    placeholder="Enter your name"
-
-                />
-
-
-
-                <Text>Email</Text>
-
-                <TextInput
-
-                    style={styles.input}
-
-                    onChangeText={setEmail}
-
-                    value={email}
-
-                    placeholder="Enter your email"
-
-                    keyboardType="email-address"
-
-                />
-
-
-
-                <Text>Password</Text>
-
-                <TextInput
-
-                    style={styles.input}
-
-                    onChangeText={setPassword}
-
-                    value={password}
-
-                    placeholder="Enter your password"
-
-                    secureTextEntry
-
-                />
-
-
-
-                <Text>Confirm Password</Text>
-
-                <TextInput
-
-                    style={styles.input}
-
-                    onChangeText={setConfirmPassword}
-
-                    value={confirmPassword}
-
-                    placeholder="Confirm your password"
-
-                    secureTextEntry
-
-                />
-
-
-
-                <Text>Face Type</Text>
-
-                <TextInput
-
-                    style={styles.input}
-
-                    onChangeText={setFaceType}
-
-                    value={faceType}
-
-                    placeholder="Enter your face type (e.g., type1, type2, type3)"
-
-                />
-
-
-
-                <Button title="Sign Up" onPress={handleSignUp} />
-
-            </View>
-
-        </SafeAreaView>
-
-    );
-
+        <TextInput
+          style={styles.input}
+          onChangeText={setFaceType}
+          value={faceType}
+          placeholder="Enter your face type (e.g., type1, type2, type3)"
+        />
+
+        <Button title="Sign Up" onPress={handleSignUp} />
+      </View>
+    </SafeAreaView>
+  );
 }
 
-
-
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
 
-    container: {
+    backgroundColor: "#fff",
 
-        flex: 1,
+    alignItems: "center",
 
-        backgroundColor: '#fff',
+    justifyContent: "center",
+  },
 
-        alignItems: 'center',
+  form: {
+    backgroundColor: "lightblue",
 
-        justifyContent: 'center',
+    padding: 20,
 
-    },
+    width: "80%",
 
-    form: {
+    borderRadius: 10,
+  },
 
-        backgroundColor: 'lightblue',
+  title: {
+    fontSize: 24,
 
-        padding: 20,
+    fontWeight: "bold",
 
-        width: '80%',
+    marginBottom: 20,
 
-        borderRadius: 10,
+    textAlign: "center",
+  },
 
-    },
+  input: {
+    height: 40,
 
-    title: {
+    borderColor: "gray",
 
-        fontSize: 24,
+    borderWidth: 1,
 
-        fontWeight: 'bold',
+    marginBottom: 10,
 
-        marginBottom: 20,
+    paddingLeft: 10,
 
-        textAlign: 'center',
-
-    },
-
-    input: {
-
-        height: 40,
-
-        borderColor: 'gray',
-
-        borderWidth: 1,
-
-        marginBottom: 10,
-
-        paddingLeft: 10,
-
-        borderRadius: 5,
-
-    },
-
+    borderRadius: 5,
+  },
 });
